@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  densh:
+    image: unclephil/densh
+    environment:
+      - DENSH_CLUSTER_NAME=${CLUSTER_NAME}
+      - DENSH_APPRISER_URL=http://notify:5000
+    networks:
+      - notification
+
+  notify:
+    image: mazzolino/apprise-microservice:0.1
+    environment:
+      NOTIFICATION_URLS: discord://1183456094627045526/hh0RGyidwvmbq5XYY4QDXmXrsP__5w-P6tMkAMiF4WoYQURCSKRUiLz4WiWqkN2AzQZ9
+    networks:
+      - notification
+
+networks:
+  notification:
