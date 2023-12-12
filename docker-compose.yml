@@ -5,16 +5,40 @@ services:
     image: unclephil/densh
     environment:
       - DENSH_CLUSTER_NAME=${CLUSTER_NAME}
-      - DENSH_APPRISER_URL=http://notify:5000
+      - DENSH_APPRISE_URL=http://apprise:8000/notify
+      # - DENSH_APPRISE_TITLE=DenShBot
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - notification
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
 
-  notify:
-    image: mazzolino/apprise-microservice:0.1
+  apprise:
+    image: caronc/apprise
     environment:
-      NOTIFICATION_URLS: discord://1183456094627045526/hh0RGyidwvmbq5XYY4QDXmXrsP__5w-P6tMkAMiF4WoYQURCSKRUiLz4WiWqkN2AzQZ9
+      APPRISE_STATELESS_URLS: discord://.../...
     networks:
       - notification
+    # ports:
+    #   - 8000:8000
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
 
 networks:
   notification:
