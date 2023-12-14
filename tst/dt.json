@@ -1,0 +1,13 @@
+{
+    "Type": "node",
+    "Action": "update",
+    "Actor": {
+      "ID": "jahoidosomy3rqo1rxjtx9ref",
+      "Attributes": {
+        "name": "koenig02dev.intranet.etnic.be"
+      }
+    },
+    "scope": "swarm",
+    "time": 1702473193,
+    "timeNano": 1702473193927968000
+}
