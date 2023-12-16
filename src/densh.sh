@@ -1,5 +1,5 @@
 #!/bin/bash 
-set -x
+# set -x
 #############################################
 ### requirements
 ### bash, jq, bc , curl
