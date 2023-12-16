@@ -1,5 +1,9 @@
 #!/bin/bash 
-# set -x
+set -x
+#############################################
+### requirements
+### bash, jq, bc , curl
+#############################################
 
 VERSION=${BUILD}
 # Environment Calculation
@@ -48,13 +52,17 @@ apprise() {
 
 webhook() {
     local ev=$1
+    ### add cluster 
+    ev=$(echo $ev | jq --arg data "$CTX" '. +{cluster: $data}')
 
     ### replace timenano by @Timestamp
     # ev=$(echo $ev | jq '[. | .["@Timestamp"] = .timeNano  | del(.timeNano)]')
-    ev=$(echo $ev | jq '. | .["@timestamp"] = .timeNano ')
+    
+    local TS=$(echo $ev | jq -r '.["timeNano"]')
+    local NTS=$(echo $TS/1000000000 | bc -l)
+    local FTS=$(date -d  @$NTS +'%Y-%m-%dT%H:%M:%S.%6N')
+    ev=$(echo $ev | jq --arg d "$FTS" '. +{"@timestamp": $d}')
 
-    ### add cluster 
-    ev=$(echo $ev | jq --arg data $CTX '. +{cluster: $data}')
 
     ### console trace
     echo $ev | jq .
