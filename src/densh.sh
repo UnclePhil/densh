@@ -19,9 +19,9 @@ APPRISE_TITLE=${DENSH_APPRISE_TITLE}
 WEBHOOK_URL=${DENSH_WEBHOOK_URL:-http://localhost:9200}
 WEBHOOK_AUTH=${DENSH_WEBHOOK_AUTH}
 
-####################################################
+##################################################
 ### Helper
-####################################################
+##################################################
 console() {
     local ev=$1
  

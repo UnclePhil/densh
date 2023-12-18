@@ -1,0 +1,15 @@
+cat << EOF | sudo tee /etc/systemd/system/docker-events.service
+[Unit]
+Description=Docker Monitor Service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker events --format '{{json .}}' --filter type=service --filter type=node --filter type=volume
+
+[Install]
+WantedBy=multi-user.target
+
+EOF
+sudo systemctl daemon-reload
+sudo systemctl start docker-events
+sudo journalctl -u docker-events -f
