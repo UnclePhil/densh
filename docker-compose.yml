@@ -2,12 +2,12 @@ version: "3.7"
 
 services:
   densh:
-    image: unclephil/densh
+    image: unclephil/densh:latest
     environment:
       - DENSH_CLUSTER_NAME=${CLUSTER_NAME}
       - DENSH_NOTIFIER=console
       - DENSH_APPRISE_URL=http://apprise:8000/notify
-      # - DENSH_APPRISE_TITLE=DenShBot
+      - DENSH_APPRISE_TITLE=DenShBot ${CLUSTER_NAME}
       - DENSH_WEBHOOK_URL=https://elkprd01.intranet.etnic.be/densh/densh
       - DENSH_WEBHOOK_AUTH=
     volumes:
