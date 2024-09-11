@@ -11,6 +11,14 @@ VERSION=${BUILD}
 CTX=${DENSH_CLUSTER_NAME:-Local}
 VNOTIFIER=${DENSH_NOTIFIER:-console}  ## values: console, apprise, elk, in lowercase
 NOTIFIER=${VNOTIFIER,,}
+VFILTER=${DENSH_FILTER:-service,volume,node}
+FILTER=""
+IFS=',' read -r -a array <<< $VFILTER
+for str in ${array[@]}; do
+FILTER=$FILTER" --filter type=$str"
+done
+echo "filter: $FILTER"
+
 ## apprise notifier
 APPRISE_URL=${DENSH_APPRISE_URL:-http://notify:5000}
 APPRISE_TITLE=${DENSH_APPRISE_TITLE}
@@ -26,8 +34,7 @@ console() {
     local ev=$1
  
     ### console trace
-    echo $ev | jq .
-    echo ""
+    echo $ev
 
 }
 
@@ -77,9 +84,9 @@ webhook() {
 ##################################################
 ### Main Loop
 ##################################################
-echo "Starting Densh $VERSION on $CTX with $NOTIFIER notifier" 
+echo "Starting Densh $VERSION on $CTX with $NOTIFIER notifier with filter $VFILTER" 
 # Docker event stream filtered by type=service
-docker events --format '{{json .}}' --filter type=service --filter type=volume --filter type=node \
+docker events --format '{{json .}}' $FILTER \
 | while read -r event; do
     case $NOTIFIER in
     console)

@@ -1,4 +1,3 @@
-export VERSION=dev
 # Environment Calculation
 
 export DENSH_CLUSTER_NAME=dev
