@@ -51,8 +51,7 @@ publish-version: repo-login ## Publish the `{version}` taged container to ECR
 	docker push $(DST_IMG):$(BVERSION)
 
 
-publish-latest: repo-login
-	tag-latest ## Publish the `latest` taged container to ECR
+publish-latest: tag-latest repo-login
 	@echo 'publish latest to $(DREPO)'
 	docker push $(DST_IMG):latest
 
